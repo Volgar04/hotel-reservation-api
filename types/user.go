@@ -2,10 +2,11 @@ package types
 
 import (
 	"fmt"
+	"net/mail"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
-	"net/mail"
 )
 
 const (
@@ -52,6 +53,10 @@ func (params CreateUserParams) Validate() map[string]string {
 		errors["email"] = fmt.Sprintf("email is invalid")
 	}
 	return errors
+}
+
+func IsValidPassword(encpw, pw string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(encpw), []byte(pw)) == nil
 }
 
 func isEmailValid(e string) bool {

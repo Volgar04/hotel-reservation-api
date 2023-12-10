@@ -1,10 +1,11 @@
 package api
 
 import (
-	"github.com/Volgar04/hotel-reservation/db"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	"github.com/Volgar04/hotel-reservation/db"
 )
 
 type HotelHandler struct {

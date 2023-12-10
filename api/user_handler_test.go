@@ -4,14 +4,16 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/Volgar04/hotel-reservation/db"
-	"github.com/Volgar04/hotel-reservation/types"
-	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/Volgar04/hotel-reservation/db"
+	"github.com/Volgar04/hotel-reservation/types"
 )
 
 const (
@@ -36,7 +38,7 @@ func setup() *testDB {
 	}
 
 	return &testDB{
-		UserStore: db.NewMongoUserStore(client, dbname),
+		UserStore: db.NewMongoUserStore(client),
 	}
 }
 
