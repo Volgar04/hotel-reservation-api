@@ -5,12 +5,13 @@ import (
 	"flag"
 	"log"
 
-	"github.com/Volgar04/hotel-reservation/api"
-	"github.com/Volgar04/hotel-reservation/api/middleware"
-	"github.com/Volgar04/hotel-reservation/db"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/Volgar04/hotel-reservation/api"
+	"github.com/Volgar04/hotel-reservation/api/middleware"
+	"github.com/Volgar04/hotel-reservation/db"
 )
 
 var config = fiber.Config{
@@ -41,9 +42,10 @@ func main() {
 		userHandler  = api.NewUserHandler(userStore)
 		hotelHandler = api.NewHotelHandler(store)
 		authHandler  = api.NewAuthHandler(userStore)
+		roomHandler  = api.NewRoomHandler(store)
 		app          = fiber.New(config)
 		auth         = app.Group("/api/")
-		apiV1        = app.Group("/api/v1", middleware.JWTAuthentication)
+		apiV1        = app.Group("/api/v1", middleware.JWTAuthentication(userStore))
 	)
 
 	// auth
@@ -61,6 +63,8 @@ func main() {
 	apiV1.Get("/hotel", hotelHandler.HandleGetHotels)
 	apiV1.Get("/hotel/:id", hotelHandler.HandleGetHotel)
 	apiV1.Get("/hotel/:id/rooms", hotelHandler.HandleGetRooms)
+
+	apiV1.Post("room/:id/book", roomHandler.HandleBookRoom)
 
 	err = app.Listen(*listenAddr)
 	if err != nil {
