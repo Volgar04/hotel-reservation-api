@@ -3,10 +3,12 @@ package db
 import (
 	"context"
 	"fmt"
-	"github.com/Volgar04/hotel-reservation/types"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+
+	"github.com/Volgar04/hotel-reservation/types"
 )
 
 const userColl = "users"

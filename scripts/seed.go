@@ -4,11 +4,12 @@ import (
 	"context"
 	"log"
 
-	"github.com/Volgar04/hotel-reservation/db"
-	"github.com/Volgar04/hotel-reservation/types"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/Volgar04/hotel-reservation/db"
+	"github.com/Volgar04/hotel-reservation/types"
 )
 
 var (
@@ -19,16 +20,17 @@ var (
 	ctx        = context.Background()
 )
 
-func seedUser(fname, lname, email string) {
+func seedUser(isAdmin bool, fname, lname, email, password string) {
 	user, err := types.NewUserFromParams(types.CreateUserParams{
 		FirstName: fname,
 		LastName:  lname,
 		Email:     email,
-		Password:  "supersecurepassword",
+		Password:  password,
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
+	user.IsAdmin = isAdmin
 	_, err = userStore.InsertUser(context.TODO(), user)
 	if err != nil {
 		log.Fatal(err)
@@ -74,7 +76,8 @@ func main() {
 	seedHotel("Beluccia", "France", 4)
 	seedHotel("The Cozy Hotel", "Nederlands", 3)
 	seedHotel("Dont die in your sleep", "London", 1)
-	seedUser("james", "foo", "james@foo.com")
+	seedUser(false, "james", "foo", "james@foo.com", "supersecurepassword")
+	seedUser(true, "nicolas", "martin", "nicolas@martin.com", "adminsupersecurepassword")
 }
 
 func init() {

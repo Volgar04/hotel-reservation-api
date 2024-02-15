@@ -31,7 +31,7 @@ type AuthParams struct {
 }
 
 type AuthResponse struct {
-	User  *types.User `json:"email"`
+	User  *types.User `json:"user"`
 	Token string      `json:"token"`
 }
 
