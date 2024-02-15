@@ -74,10 +74,11 @@ func main() {
 	// TODO: cancel a booking
 
 	// bookings handlers
-	apiV1.Get("/booking/:id", bookingHandler.HandlerGetBooking)
+	apiV1.Get("/booking/:id", bookingHandler.HandleGetBooking)
+	apiV1.Get("/booking/:id/cancel", bookingHandler.HandleCancelBooking)
 
 	// admin handlers
-	admin.Get("/booking", bookingHandler.HandlerGetBookings)
+	admin.Get("/booking", bookingHandler.HandleGetBookings)
 
 	err = app.Listen(*listenAddr)
 	if err != nil {
