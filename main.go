@@ -31,13 +31,15 @@ func main() {
 
 	// handlers initializations
 	var (
-		hotelStore = db.NewMongoHotelStore(client)
-		roomStore  = db.NewMongoRoomStore(client, hotelStore)
-		userStore  = db.NewMongoUserStore(client)
-		store      = &db.Store{
-			Hotel: hotelStore,
-			Room:  roomStore,
-			User:  userStore,
+		hotelStore   = db.NewMongoHotelStore(client)
+		roomStore    = db.NewMongoRoomStore(client, hotelStore)
+		userStore    = db.NewMongoUserStore(client)
+		bookingStore = db.NewMongoBookingStore(client)
+		store        = &db.Store{
+			Hotel:   hotelStore,
+			Room:    roomStore,
+			User:    userStore,
+			Booking: bookingStore,
 		}
 		userHandler  = api.NewUserHandler(userStore)
 		hotelHandler = api.NewHotelHandler(store)
@@ -64,6 +66,7 @@ func main() {
 	apiV1.Get("/hotel/:id", hotelHandler.HandleGetHotel)
 	apiV1.Get("/hotel/:id/rooms", hotelHandler.HandleGetRooms)
 
+	apiV1.Get("room", roomHandler.HandleGetRooms)
 	apiV1.Post("room/:id/book", roomHandler.HandleBookRoom)
 
 	err = app.Listen(*listenAddr)
