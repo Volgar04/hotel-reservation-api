@@ -27,14 +27,21 @@ type UserStore interface {
 	UpdateUser(ctx context.Context, filter bson.M, params types.UpdateUserParams) error
 }
 
-func (s *MongoUserStore) Drop(ctx context.Context) error {
-	fmt.Println("--- dropping users collection")
-	return s.coll.Drop(ctx)
-}
-
 type MongoUserStore struct {
 	client *mongo.Client
 	coll   *mongo.Collection
+}
+
+func NewMongoUserStore(client *mongo.Client) *MongoUserStore {
+	return &MongoUserStore{
+		client: client,
+		coll:   client.Database(DBNAME).Collection(userColl),
+	}
+}
+
+func (s *MongoUserStore) Drop(ctx context.Context) error {
+	fmt.Println("--- dropping users collection")
+	return s.coll.Drop(ctx)
 }
 
 func (s *MongoUserStore) UpdateUser(ctx context.Context, filter bson.M, params types.UpdateUserParams) error {
@@ -66,13 +73,6 @@ func (s *MongoUserStore) InsertUser(ctx context.Context, user *types.User) (*typ
 	}
 	user.ID = res.InsertedID.(primitive.ObjectID)
 	return user, nil
-}
-
-func NewMongoUserStore(client *mongo.Client) *MongoUserStore {
-	return &MongoUserStore{
-		client: client,
-		coll:   client.Database(DBNAME).Collection(userColl),
-	}
 }
 
 func (s *MongoUserStore) GetUsers(ctx context.Context) ([]*types.User, error) {
