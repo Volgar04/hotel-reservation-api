@@ -10,14 +10,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/Volgar04/hotel-reservation/api"
-	"github.com/Volgar04/hotel-reservation/api/middleware"
 	"github.com/Volgar04/hotel-reservation/db"
 )
 
 var config = fiber.Config{
-	ErrorHandler: func(c *fiber.Ctx, err error) error {
-		return c.JSON(map[string]string{"error": err.Error()})
-	},
+	ErrorHandler: api.ErrorHandler,
 }
 
 func main() {
@@ -48,8 +45,8 @@ func main() {
 		bookingHandler = api.NewBookingHandler(store)
 		app            = fiber.New(config)
 		auth           = app.Group("/api/")
-		apiV1          = app.Group("/api/v1", middleware.JWTAuthentication(userStore))
-		admin          = apiV1.Group("/admin", middleware.AdminAuth)
+		apiV1          = app.Group("/api/v1", api.JWTAuthentication(userStore))
+		admin          = apiV1.Group("/admin", api.AdminAuth)
 	)
 
 	// auth
