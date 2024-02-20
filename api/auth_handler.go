@@ -52,23 +52,20 @@ func (h *AuthHandler) HandleAuthenticate(c *fiber.Ctx) error {
 	if err := c.BodyParser(&params); err != nil {
 		return err
 	}
-
 	user, err := h.userStore.GetUserByEmail(c.Context(), params.Email)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return invalidCredentials(c)
+			return NewError(http.StatusNotFound, "invalid credentials")
 		}
 		return err
 	}
-
 	if !types.IsValidPassword(user.EncryptedPassword, params.Password) {
-		return invalidCredentials(c)
+		return NewError(http.StatusNotFound, "invalid credentials")
 	}
 	resp := AuthResponse{
 		User:  user,
 		Token: CreateTokenFromUser(user),
 	}
-
 	return c.JSON(resp)
 }
 
