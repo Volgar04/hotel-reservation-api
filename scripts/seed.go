@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -39,4 +40,10 @@ func main() {
 	room := fixtures.AddRoom(&store, "small", true, 99.9, hotel.ID)
 	booking := fixtures.AddBooking(&store, user.ID, room.ID, 2, time.Now().AddDate(0, 1, 0), time.Now().AddDate(0, 1, 5), false)
 	fmt.Println("booking ->", booking)
+
+	for i := 0; i < 100; i++ {
+		name := fmt.Sprintf("random hotel name %d", i)
+		location := fmt.Sprintf("location %d", i)
+		fixtures.AddHotel(&store, name, location, rand.Intn(5), nil)
+	}
 }
