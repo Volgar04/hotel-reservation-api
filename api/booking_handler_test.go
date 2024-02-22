@@ -15,7 +15,7 @@ import (
 )
 
 func TestUserGetBooking(t *testing.T) {
-	db := setup()
+	db := setup(t)
 	defer db.teardown(t)
 
 	var (
@@ -64,7 +64,7 @@ func TestUserGetBooking(t *testing.T) {
 }
 
 func TestAdminGetBookings(t *testing.T) {
-	db := setup()
+	db := setup(t)
 	defer db.teardown(t)
 
 	var (

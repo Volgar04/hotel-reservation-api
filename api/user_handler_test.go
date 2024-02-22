@@ -12,7 +12,7 @@ import (
 )
 
 func TestPostUser(t *testing.T) {
-	tdb := setup()
+	tdb := setup(t)
 	defer tdb.teardown(t)
 
 	app := fiber.New()

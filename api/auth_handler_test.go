@@ -14,7 +14,7 @@ import (
 )
 
 func TestAuthenticateWithWrongPassword(t *testing.T) {
-	tdb := setup()
+	tdb := setup(t)
 	defer tdb.teardown(t)
 	fixtures.AddUser(tdb.Store, "james", "foo", false)
 
@@ -49,7 +49,7 @@ func TestAuthenticateWithWrongPassword(t *testing.T) {
 }
 
 func TestAuthenticateSuccess(t *testing.T) {
-	tdb := setup()
+	tdb := setup(t)
 	defer tdb.teardown(t)
 	insertedUser := fixtures.AddUser(tdb.Store, "james", "foo", false)
 
